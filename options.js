@@ -1,16 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     const apiKeyInput = document.getElementById('apiKey');
     const micSelect = document.getElementById('micSelect');
+    const systemPromptInput = document.getElementById('systemPrompt');
     const saveBtn = document.getElementById('saveBtn');
     const settingsStatus = document.getElementById('settingsStatusMessage'); 
     const micPermissionBtn = document.getElementById('micPermissionBtn');
     const micStatusMessage = document.getElementById('micStatusMessage'); 
 
+    const defaultSystemPrompt = "You are an expert technical transcriptionist. Transcribe the attached audio with absolute precision. Remove filler words, correct minor grammar, and apply proper punctuation. Output ONLY the transcribed text.";
+
     // Load existing settings
-    chrome.storage.local.get(['apiKey', 'selectedMic'], (result) => {
+    chrome.storage.local.get(['apiKey', 'selectedMic', 'systemPrompt'], (result) => {
         if (result.apiKey) {
             apiKeyInput.value = result.apiKey;
         }
+        
+        systemPromptInput.value = result.systemPrompt || defaultSystemPrompt;
         
         // After loading, populate the mic list and set the saved one
         populateMicrophones(result.selectedMic);
@@ -46,10 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     saveBtn.addEventListener('click', () => {
         const apiKey = apiKeyInput.value.trim();
         const selectedMic = micSelect.value;
+        const systemPrompt = systemPromptInput.value.trim();
 
         chrome.storage.local.set({ 
             apiKey: apiKey,
-            selectedMic: selectedMic
+            selectedMic: selectedMic,
+            systemPrompt: systemPrompt
         }, () => {
             settingsStatus.classList.remove('hidden');
             setTimeout(() => {

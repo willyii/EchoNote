@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let streamReference = null;
 
     // Load settings and history
-    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory'], (result) => {
+    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory', 'systemPrompt'], (result) => {
         if (result.apiKey) {
             apiKey = result.apiKey;
         } else {
@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (result.transcriptHistory && Array.isArray(result.transcriptHistory)) {
             transcriptHistory = result.transcriptHistory;
         }
+
+        systemPrompt = result.systemPrompt || "You are an expert technical transcriptionist. Transcribe the attached audio with absolute precision. Remove filler words, correct minor grammar, and apply proper punctuation. Output ONLY the transcribed text.";
+
         renderHistory();
 
         // Auto-start dictation if API key is present
@@ -229,8 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Send generic dictation and audio to Gemini AI
     const sendToGemini = async (base64Audio) => {
-        let promptText = "Please accurately transcribe the provided audio and format it cleanly. Return ONLY the transcribed text.";
-
         if (!apiKey) {
             alert('Please set your Gemini API Key in the extensions settings.');
             return;
@@ -248,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     contents: [{
                         parts: [
-                            { text: promptText },
+                            { text: systemPrompt },
                             { 
                                 inlineData: {
                                     mimeType: "audio/webm",

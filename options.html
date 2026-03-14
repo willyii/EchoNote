@@ -61,6 +61,11 @@
                 </select>
                 <p class="helper-text">Make sure you have granted microphone access above first to see all devices.</p>
             </div>
+            <div class="form-group">
+                <label for="systemPrompt">System Prompt</label>
+                <textarea id="systemPrompt" rows="4" placeholder="Enter custom instructions for Gemini..."></textarea>
+                <p class="helper-text">Customize how Gemini transcribes your audio.</p>
+            </div>
             
             <button id="saveBtn" class="primary-btn">Save Settings</button>
             <div id="settingsStatusMessage" class="status-message hidden">Settings saved!</div>
