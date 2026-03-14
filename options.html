@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoNote Permissions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-color);
+        }
+        .permissions-container {
+            max-width: 500px;
+            text-align: center;
+            background-color: var(--surface-color);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .icon-large {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        #statusMessage {
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="permissions-container">
+        <div class="icon-large">🎙️</div>
+        <header>
+            <h1>EchoNote Settings</h1>
+        </header>
+        
+        <div class="settings-container">
+            <h2>Configuration</h2>
+            <div class="form-group">
+                <label for="apiKey">Gemini API Key</label>
+                <input type="password" id="apiKey" placeholder="AIzaSy...">
+                <p class="helper-text">Your key is stored locally on your device.</p>
+            </div>
+            <div class="form-group">
+                <label for="micSelect">Microphone</label>
+                <select id="micSelect">
+                    <option value="default">Default System Microphone</option>
+                </select>
+                <p class="helper-text">Make sure you have granted microphone access above first to see all devices.</p>
+            </div>
+            
+            <button id="saveBtn" class="primary-btn">Save Settings</button>
+            <div id="settingsStatusMessage" class="status-message hidden">Settings saved!</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="microphone-section">
+            <h2>Microphone Access</h2>
+            <p>
+                EchoNote requires microphone access to transcribe your voice. 
+                Google Chrome prevents extensions from asking for this permission directly from the small popup menu.
+            </p>
+            <button id="micPermissionBtn" class="primary-btn">
+                <span>Grant Permission</span>
+            </button>
+            <div id="micStatusMessage"></div>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

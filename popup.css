@@ -1,0 +1,394 @@
+:root {
+    --bg-color: #0f172a;
+    --surface-color: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    --danger-color: #ef4444;
+    --danger-hover: #dc2626;
+    --success-color: #10b981;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    width: 400px; /* Fixed width for Chrome Extension Popup */
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+header {
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--surface-color);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+}
+
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.primary-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.primary-btn.recording {
+    background-color: var(--danger-color);
+}
+
+.primary-btn.recording:hover {
+    background-color: var(--danger-hover);
+}
+
+.secondary-btn {
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #2d3748;
+}
+
+.secondary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Indicators */
+.indicator {
+    text-align: center;
+    font-size: 13px;
+    color: var(--danger-color);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--danger-color);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.mic-btn.recording {
+    background-color: var(--danger-color);
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Output Section */
+.response-box {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap; /* For rendering line breaks */
+}
+
+.response-box.clickable {
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.response-box.clickable:hover {
+    border-color: var(--accent-color);
+    background-color: #26344b;
+}
+
+.placeholder-text {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+#loadingIndicator {
+    text-align: center;
+    font-size: 13px;
+    color: var(--accent-color);
+    margin-top: 8px;
+    animation: pulse 1.5s infinite;
+}
+
+.success-text {
+    color: var(--success-color);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* Visualizer Styles (Above Button) */
+.visualizer-container {
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Space between EQ and button */
+}
+
+.visualizer-bars {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.visualizer-bars.active {
+    opacity: 1;
+}
+
+.visualizer-bars .bar {
+    width: 6px;
+    height: 4px; /* Default resting height */
+    background-color: var(--danger-color); /* Match red UI design */
+    border-radius: 4px;
+    transition: height 0.05s ease;
+}
+
+/* History List Styles */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px; /* Scrollbar space */
+}
+
+/* Custom scrollbar for history to keep it sleek */
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.history-item {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.history-item:hover {
+    border-color: var(--primary-color);
+    background-color: #fca5a51a; /* Very faint red tint on hover */
+}
+
+.history-item-empty {
+    color: var(--text-secondary);
+    text-align: center;
+    font-style: italic;
+    padding: 20px 0;
+}
+
+.history-item .copy-toast {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background-color: var(--success-color);
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.history-item.copied .copy-toast {
+    opacity: 1;
+}
+
+.mic-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 10px;
+    width: 60%;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease; /* No transform transition to prevent moving */
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.mic-btn:hover {
+    transform: none; /* override .primary-btn translateY */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--text-secondary);
+    transition: color 0.2s, transform 0.2s;
+    width: auto;
+}
+
+.icon-btn:hover {
+    color: var(--text-primary);
+    transform: rotate(45deg);
+}
+
+.warning-banner {
+    background-color: var(--danger-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 12px;
+}
+
+/* Options page specific */
+.settings-form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.help-text {
+    font-size: 12px !important;
+    color: var(--text-secondary);
+    margin: 4px 0 0 0 !important;
+}
+.divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 30px 0;
+}
+.microphone-section h2 {
+    font-size: 18px;
+    margin-top: 0;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoNote</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>EchoNote</h1>
+                <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+            </div>
+            <p>Voice-to-AI Dictation</p>
+        </header>
+
+        <!-- Status & Recording Section -->
+        <section class="recording-section">
+            <div class="visualizer-container">
+                <div id="audioVisualizer" class="visualizer-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            
+            <button id="dictationBtn" class="primary-btn mic-btn">
+                <span id="dictationBtnText">Start Recording</span>
+            </button>
+        </section>
+
+        <!-- Output Section -->
+        <section class="response-section">
+            <label>Past Transcripts (Last 5)</label>
+            <div id="transcriptHistoryList" class="history-list">
+                <!-- Reactively populated via JS -->
+            </div>
+            
+            <div id="loadingIndicator" class="loading-state hidden">
+                <div class="spinner"></div> Generating response...
+            </div>
+        </section>
+        
+        <div id="setupWarning" class="warning-banner hidden">
+            Please set your API key in Settings first. 
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
