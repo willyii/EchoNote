@@ -12,10 +12,15 @@
         <!-- Header -->
         <header>
             <div class="header-content">
-                <h1>EchoNote</h1>
+                <div class="header-brand">
+                    <div class="header-icon">🎙</div>
+                    <div>
+                        <h1>EchoNote</h1>
+                        <p>Voice-to-AI Dictation</p>
+                    </div>
+                </div>
                 <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
             </div>
-            <p>Voice-to-AI Dictation</p>
         </header>
 
         <!-- Status & Recording Section -->
@@ -29,10 +34,9 @@
                     <div class="bar"></div>
                 </div>
             </div>
-            
-            <button id="dictationBtn" class="primary-btn mic-btn">
-                <span id="dictationBtnText">Start Recording</span>
-            </button>
+
+            <button id="dictationBtn" class="primary-btn mic-btn" title="Start Recording">🎙</button>
+            <div class="mic-label" id="dictationBtnText">Tap to record</div>
         </section>
 
         <!-- Output Section -->

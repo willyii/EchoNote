@@ -146,7 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // UI Updates
                     dictationBtn.classList.add('recording');
-                    dictationBtnText.textContent = 'Recording';
+                    dictationBtn.textContent = '⏹';
+                    dictationBtnText.textContent = 'Recording...';
                     
                     if (visualizer) visualizer.classList.add('active');
 
@@ -202,8 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         dictationBtn.classList.remove('recording');
-        dictationBtnText.classList.remove('hidden');
-        dictationBtnText.textContent = 'Start Recording';
+        dictationBtn.textContent = '🎙';
+        dictationBtnText.textContent = 'Processing...';
         dictationBtn.disabled = true;
         
         if (visualizer) {
@@ -213,10 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dictationBtn.addEventListener('click', () => {
         if (isRecording) {
-            stopRecording(); 
+            stopRecording();
         } else {
             dictationBtn.disabled = false;
             dictationBtn.classList.remove('secondary-btn');
+            dictationBtnText.textContent = 'Starting...';
             startRecording();
         }
     });
@@ -287,8 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingIndicator.classList.add('hidden');
             dictationBtn.disabled = false;
             dictationBtn.classList.remove('secondary-btn');
-            dictationBtnText.classList.remove('hidden');
-            dictationBtnText.textContent = 'Start Recording';
+            dictationBtn.textContent = '🎙';
+            dictationBtnText.textContent = 'Tap to record';
         }
     };
 
