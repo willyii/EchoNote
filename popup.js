@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isRecording = false;
     let apiKey = '';
     let selectedModel = '';
+    let selectedMic = 'default';
 
     // Audio recording variables
     let mediaRecorder = null;
@@ -22,18 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let streamReference = null;
 
     // Load settings and history
-    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory', 'systemPrompt'], (result) => {
+    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory', 'systemPrompt', 'selectedMic'], (result) => {
         if (result.apiKey) {
             apiKey = result.apiKey;
         } else {
             setupWarning.classList.remove('hidden');
         }
-        
-        if (result.selectedModel) {
-            selectedModel = result.selectedModel;
-        } else {
-            selectedModel = 'gemini-2.0-flash'; // default
-        }
+
+        selectedModel = result.selectedModel || 'gemini-2.0-flash';
+        selectedMic = result.selectedMic || 'default';
 
         if (result.transcriptHistory && Array.isArray(result.transcriptHistory)) {
             transcriptHistory = result.transcriptHistory;
@@ -43,9 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderHistory();
 
-        // Auto-start dictation if API key is present
         if (apiKey) {
-            setTimeout(startRecording, 100);
+            startRecording();
         }
     });
 
@@ -132,21 +129,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startRecording() {
         if (isRecording) return;
-        
-        chrome.storage.local.get(['selectedMic'], (res) => {
-            const constraints = { audio: true };
-            if (res.selectedMic && res.selectedMic !== 'default') {
-                constraints.audio = { deviceId: { exact: res.selectedMic } };
-            }
 
-            navigator.mediaDevices.getUserMedia(constraints)
+        const constraints = { audio: true };
+        if (selectedMic && selectedMic !== 'default') {
+            constraints.audio = { deviceId: { exact: selectedMic } };
+        }
+
+        navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
                     isRecording = true;
                     streamReference = stream;
                     
                     // UI Updates
                     dictationBtn.classList.add('recording');
-                    dictationBtnText.textContent = 'Recording';
+                    dictationBtn.textContent = '⏹';
+                    dictationBtnText.textContent = 'Recording...';
                     
                     if (visualizer) visualizer.classList.add('active');
 
@@ -178,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.open(chrome.runtime.getURL('options.html'));
                     }
                 });
-        });
     }
 
     const stopRecording = () => {
@@ -202,8 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         dictationBtn.classList.remove('recording');
-        dictationBtnText.classList.remove('hidden');
-        dictationBtnText.textContent = 'Start Recording';
+        dictationBtn.textContent = '🎙';
+        dictationBtnText.textContent = 'Processing...';
         dictationBtn.disabled = true;
         
         if (visualizer) {
@@ -213,10 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dictationBtn.addEventListener('click', () => {
         if (isRecording) {
-            stopRecording(); 
+            stopRecording();
         } else {
             dictationBtn.disabled = false;
             dictationBtn.classList.remove('secondary-btn');
+            dictationBtnText.textContent = 'Starting...';
             startRecording();
         }
     });
@@ -287,8 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingIndicator.classList.add('hidden');
             dictationBtn.disabled = false;
             dictationBtn.classList.remove('secondary-btn');
-            dictationBtnText.classList.remove('hidden');
-            dictationBtnText.textContent = 'Start Recording';
+            dictationBtn.textContent = '🎙';
+            dictationBtnText.textContent = 'Tap to record';
         }
     };
 
