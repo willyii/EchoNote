@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isRecording = false;
     let apiKey = '';
     let selectedModel = '';
+    let selectedMic = 'default';
 
     // Audio recording variables
     let mediaRecorder = null;
@@ -22,18 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let streamReference = null;
 
     // Load settings and history
-    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory', 'systemPrompt'], (result) => {
+    chrome.storage.local.get(['apiKey', 'selectedModel', 'transcriptHistory', 'systemPrompt', 'selectedMic'], (result) => {
         if (result.apiKey) {
             apiKey = result.apiKey;
         } else {
             setupWarning.classList.remove('hidden');
         }
-        
-        if (result.selectedModel) {
-            selectedModel = result.selectedModel;
-        } else {
-            selectedModel = 'gemini-2.0-flash'; // default
-        }
+
+        selectedModel = result.selectedModel || 'gemini-2.0-flash';
+        selectedMic = result.selectedMic || 'default';
 
         if (result.transcriptHistory && Array.isArray(result.transcriptHistory)) {
             transcriptHistory = result.transcriptHistory;
@@ -43,9 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderHistory();
 
-        // Auto-start dictation if API key is present
         if (apiKey) {
-            setTimeout(startRecording, 100);
+            startRecording();
         }
     });
 
@@ -132,14 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startRecording() {
         if (isRecording) return;
-        
-        chrome.storage.local.get(['selectedMic'], (res) => {
-            const constraints = { audio: true };
-            if (res.selectedMic && res.selectedMic !== 'default') {
-                constraints.audio = { deviceId: { exact: res.selectedMic } };
-            }
 
-            navigator.mediaDevices.getUserMedia(constraints)
+        const constraints = { audio: true };
+        if (selectedMic && selectedMic !== 'default') {
+            constraints.audio = { deviceId: { exact: selectedMic } };
+        }
+
+        navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
                     isRecording = true;
                     streamReference = stream;
@@ -179,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.open(chrome.runtime.getURL('options.html'));
                     }
                 });
-        });
     }
 
     const stopRecording = () => {
